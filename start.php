@@ -17,6 +17,8 @@ function xmlrpc_init() {
 
 	elgg_register_page_handler('mt', 'xmlrpc_page_handler');
 	elgg_register_page_handler('xml-rpc.php', 'xmlrpc_page_handler');
+
+	elgg_register_plugin_hook_handler('public_pages', 'walled_garden', 'xmlrpc_public_pages');
 }
 
 /**
@@ -59,4 +61,18 @@ function xmlrpc_page_handler($page) {
 	echo elgg_view_page('XML-RPC', elgg_view('xml-rpc/output', array('result' => $result)));
 
 	return true;
+}
+
+/**
+ * Add the xml-rpc endpoints to the list of public pages
+ *
+ * @param string $hook  The hook name
+ * @param string $type  The hook type
+ * @param array  $pages Array of public pages
+ * @return array 
+ */
+function xmlrpc_public_pages($hook, $type, $pages) {
+	$pages[] = 'xml-rpc\.php';
+	$pages[] = 'mt/mt-xmlrpc\.cgi';
+	return $pages;
 }
